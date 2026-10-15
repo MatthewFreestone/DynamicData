@@ -69,7 +69,7 @@ internal sealed class Virtualiser<T>(IObservable<IChangeSet<T>> source, IObserva
 
         if (changeSet is not null && changeSet.Count != 0)
         {
-            var changes = changeSet.EmptyIfNull().Where(change => change.Reason == ListChangeReason.Moved && change.MovedWithinRange(request.StartIndex, request.StartIndex + request.Size)).Select(x => x.Item);
+            var changes = changeSet.EmptyIfNull().Where(change => change.Reason == ListChangeReason.Moved && change.MovedWithinRange(request.StartIndex, request.StartIndex + request.Size - 1)).Select(x => x.Item);
 
             foreach (var itemChange in changes)
             {

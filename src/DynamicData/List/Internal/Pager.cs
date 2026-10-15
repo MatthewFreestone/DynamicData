@@ -100,7 +100,7 @@ internal sealed class Pager<T>(IObservable<IChangeSet<T>> source, IObservable<IP
         {
             var changes = changeSet
                 .Where(change => change.Reason == ListChangeReason.Moved
-                                 && change.MovedWithinRange(startIndex, startIndex + request.Size)).Select(x => x.Item);
+                                 && change.MovedWithinRange(startIndex, startIndex + request.Size - 1)).Select(x => x.Item);
 
             foreach (var itemChange in changes)
             {

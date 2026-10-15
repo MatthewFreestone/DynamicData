@@ -464,7 +464,7 @@ public static class ListEx
         var current = source.Item.CurrentIndex;
         var previous = source.Item.PreviousIndex;
 
-        return (current >= startIndex && current <= endIndex) || (previous >= startIndex && previous <= endIndex);
+        return (current >= startIndex && current <= endIndex) && (previous >= startIndex && previous <= endIndex);
     }
 
     private static void Clone<T>(this IList<T> source, Change<T> item, IEqualityComparer<T> equalityComparer)

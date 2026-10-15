@@ -271,12 +271,12 @@ public class ChangeAwareList<T> : IExtendedList<T>
             throw new ArgumentException($"{nameof(destination)} cannot be negative");
         }
 
-        if (original > _innerList.Count)
+        if (original > _innerList.Count - 1)
         {
             throw new ArgumentException($"{nameof(original)} cannot be greater than the size of the collection");
         }
 
-        if (destination > _innerList.Count)
+        if (destination > _innerList.Count - 1)
         {
             throw new ArgumentException($"{nameof(destination)} cannot be greater than the size of the collection");
         }
