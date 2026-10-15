@@ -52,6 +52,150 @@ public class PageFixture : IDisposable
     }
 
     [Fact]
+    public void MoveOutOfFirstPageAtUpperBoundary()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(1, 25));
+
+        _source.Move(0, 25);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(0).Take(25));
+
+        _source.Move(0, 24);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(0).Take(25));
+    }
+
+    [Fact]
+    public void MoveIntoFirstPageAtUpperBoundary()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(1, 25));
+
+        _source.Move(25, 0);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(0).Take(25));
+
+        _source.Move(0, 24);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(0).Take(25));
+    }
+
+    [Fact]
+    public void MoveOutOfSecondPageAtUpperBoundary()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(2, 25));
+
+        _source.Move(25, 50);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+    }
+
+    [Fact]
+    public void MoveIntoSecondPageAtUpperBoundary()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(2, 25));
+
+        _source.Move(50, 25);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+    }
+
+    [Fact]
+    public void MoveOutOfPageAtLowerBoundary()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(2, 25));
+
+        _source.Move(25, 24);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+    }
+
+    [Fact]
+    public void MoveIntoPageAtLowerBoundary()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(2, 25));
+
+        _source.Move(24, 25);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+    }
+
+    [Fact]
+    public void MoveFromFirstToLastIndexInPage()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(2, 25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+    }
+
+    [Fact]
+    public void MoveFromLastToFirstIndexInPage()
+    {
+        var people = _generator.Take(100).ToArray();
+        _source.AddRange(people);
+        _requestSubject.OnNext(new PageRequest(2, 25));
+
+        _source.Move(49, 25);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+
+        _source.Move(25, 49);
+
+        _results.Exception.Should().BeNull();
+        _results.Data.Items.Should().Equal(_source.Items.Skip(25).Take(25));
+    }
+
+    [Fact]
     public void MoveToNextPage()
     {
         var people = _generator.Take(100).ToArray();

@@ -232,6 +232,45 @@ public class ChangeAwareListFixture
     }
 
     [Fact]
+    public void ThrowWhenMoveDestinationEqualsCount()
+    {
+        var expected = Enumerable.Range(0, 3).ToArray();
+        _list.AddRange(expected);
+        _list.ClearChanges();
+
+        Assert.Throws<ArgumentException>(() => _list.Move(0, 3));
+
+        _list.Should().Equal(expected);
+        _list.CaptureChanges().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ThrowWhenMoveOriginalEqualsCount()
+    {
+        var expected = Enumerable.Range(0, 3).ToArray();
+        _list.AddRange(expected);
+        _list.ClearChanges();
+
+        Assert.Throws<ArgumentException>(() => _list.Move(3, 0));
+
+        _list.Should().Equal(expected);
+        _list.CaptureChanges().Should().BeEmpty();
+    }
+
+    [Fact]
+    public void ThrowWhenMovingInEmptyList()
+    {
+        var expected = Enumerable.Range(0, 0).ToArray();
+        _list.AddRange(expected);
+        _list.ClearChanges();
+
+        Assert.Throws<ArgumentException>(() => _list.Move(0, 0));
+
+        _list.Should().Equal(expected);
+        _list.CaptureChanges().Should().BeEmpty();
+    }
+
+    [Fact]
     public void ThrowWhenRemovingItemOutsideOfBoundaries() => Assert.Throws<ArgumentOutOfRangeException>(() => _list.RemoveAt(0));
 
     [Fact]
